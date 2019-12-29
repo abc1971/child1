@@ -7,7 +7,7 @@ function theme_enqueue_styles() {
         array('parent-style')
     );
 }
-
+//change2
 add_filter( 'wc_order_is_editable', '__return_true' );
 
 add_action( 'woocommerce_checkout_create_order', 'additional_hidden_checkout_field_save', 20, 2 );
@@ -31,7 +31,7 @@ function order_declaration_backend ($order){
     $np = new NovaPoshtaApi2('fdc3bd4d6aae78eefe2c18eb267f15d5');
     $result = $np->documentsTracking($order->get_meta( '_novaposhta_field_data' ));
     echo(($result['data'][0]['Status']) . "</strong>");
-} 
+}
 
 add_action( 'woocommerce_admin_order_data_after_shipping_address', 'order_declaration_backend', 10, 1 );
 
@@ -195,7 +195,7 @@ function sms_center_save_meta_box_data( $post_id ){
         $message_sms = "Vash zakaz " . $order->id . " otpravlen! Nova Poshta, nomer deklaracii " . $order->get_meta( '_novaposhta_field_data' ) . ". INFORMATICA.COM.UA, tel (068) 079-53-99";
 		$tracking_url = "https://novaposhta.ua/tracking/?cargo_number=" . $order->get_meta( '_novaposhta_field_data' );
 		$message_email  = "Добрый день!\n\nВаш заказ №". $order->id . " отправлен.\n\nПеревозчик - Новая Почта. Декларация №" . $order->get_meta( '_novaposhta_field_data' ) . ".\nВы можете отследить состояние Вашей посылки на странице " . $tracking_url . "\n\nС уважением, магазин informatica.com.ua,\n(068) 079-53-99";
-        $title_email = "Ваш заказ отослан, декларация №...";		
+        $title_email = "Ваш заказ отослан, декларация №...";
 	}
 	    //     option for sending "prosim perezvonit"
     elseif( isset( $_POST['submit_sms_center3'] ) ) {
@@ -214,7 +214,7 @@ function sms_center_save_meta_box_data( $post_id ){
 		$message_sms = $order_mytotal . " hrn. 5169 3305 1223 4946 v PrivatBanke. Nezhigay Sergey. Prosim perezvonit posle oplati (068)079-5399!";
 		$message_email = "Добрый день!\n\n" . $order_mytotal . " грн. 5169 3305 1223 4946 в Приватбанке. Нежигай Сергей. Просим перезвонить после оплаты (068)079-5399!\nНомер Вашего заказа:". $order->id . ".\n\nС уважением, магазин informatica.com.ua";
 		$title_email = "Реквизиты для оплаты заказа в Информатике";
-	}	
+	}
 		    //     option for sending "реквизиты Ч "
 	    elseif( isset( $_POST['submit_sms_center5'] ) ) {
         $nonce5 = $_POST[ 'sms_center_nonce5' ];
@@ -223,7 +223,7 @@ function sms_center_save_meta_box_data( $post_id ){
 		$message_sms = $order_mytotal . " hrn. 4149 6293 9828 9439 v PrivatBanke. Cherginets Sergey. Prosim perezvonit posle oplati (068)079-5399!";
 		$message_email = "Добрый день!\n\n" . $order_mytotal . " грн. 4149 6293 9828 9439 в Приватбанке. Чергинец Сергей. Просим перезвонить после оплаты (068)079-5399!\nНомер Вашего заказа:". $order->id . ".\n\nС уважением, магазин informatica.com.ua";
 		$title_email = "Реквизиты для оплаты заказа в Информатике";
-	}	
+	}
 		    //     option for sending "реквизиты О "
 	    elseif( isset( $_POST['submit_sms_center6'] ) ) {
         $nonce6 = $_POST[ 'sms_center_nonce6' ];
@@ -232,7 +232,7 @@ function sms_center_save_meta_box_data( $post_id ){
 		$message_sms = $order_mytotal . " hrn. 5168 7422 2310 8519 v PrivatBanke. Olhovenko Andrey. Prosim perezvonit posle oplati (068)079-5399!";
 		$message_email = "Добрый день!\n\n" . $order_mytotal . " грн. 5168 7422 2310 8519 в Приватбанке. Ольховенко Андрей. Просим перезвонить после оплаты (068)079-5399!\nНомер Вашего заказа:". $order->id . ".\n\nС уважением, магазин informatica.com.ua";
 		$title_email = "Реквизиты для оплаты заказа в Информатике";
-	}	
+	}
 		elseif( isset( $_POST['submit_sms_center7'] ) ) {
         $nonce7 = $_POST[ 'sms_center_nonce7' ];
         if ( ! wp_verify_nonce( $nonce7 ) )
@@ -240,7 +240,7 @@ function sms_center_save_meta_box_data( $post_id ){
 		$message_sms = $order_mytotal . " hrn. 4149 4393 0021 7670 v PrivatBanke. Drin Dmitry. Prosim perezvonit posle oplati (068)079-5399!";
 		$message_email = "Добрый день!\n\n" . $order_mytotal . " грн. 4149 4393 0021 7670 в Приватбанке. Дринь Дмитрий. Просим перезвонить после оплаты (068)079-5399!\nНомер Вашего заказа:". $order->id . ".\n\nС уважением, магазин informatica.com.ua";
 		$title_email = "Реквизиты для оплаты заказа в Информатике";
-	}	
+	}
 	else
 		return $post_id;
 	$customeremail = $order->get_billing_email();
@@ -377,8 +377,8 @@ function sv_wc_cogs_add_order_profit_column_header( $columns ) {
 
         if ( 'order_total' === $column_name ) {
             $new_columns['delivery_status'] = __( 'НП', 'my-textdomain' );
-            $new_columns['order_profit'] = __( 'Сумма', 'my-textdomain' );			
-			$new_columns['order_item'] = __( 'Товары', 'my-textdomain' );	
+            $new_columns['order_profit'] = __( 'Сумма', 'my-textdomain' );
+			$new_columns['order_item'] = __( 'Товары', 'my-textdomain' );
         }
     }
 
@@ -410,12 +410,12 @@ function sv_wc_cogs_add_order_profit_column_content( $column ) {
             $profit = $total - $cost;
         }
 		echo wc_price( $profit, array( 'currency' => $currency ));
-	}	
+	}
 	elseif ( 'order_item' === $column ) {
         $order    = wc_get_order( $post->ID );
         $item   = '';
 		$item = $order->get_items();
-		foreach($item as $value){ 
+		foreach($item as $value){
 			echo mb_strimwidth($value['name'], 0, 24, "..");
 		}
     }
@@ -430,7 +430,7 @@ function sv_wc_cogs_add_order_profit_column_content( $column ) {
 		echo mb_strimwidth($result['data'][0]['Status'], 0, 24, "..");
 
 		}
-		
+
     }
 }
 add_action( 'manage_shop_order_posts_custom_column', 'sv_wc_cogs_add_order_profit_column_content' );
@@ -568,10 +568,10 @@ function custom_delivery_flat_rate_cost_calculation( $rates, $package )
 	return $rates;
 }
 
-add_filter('woocommerce_cart_shipping_method_full_label','remove_local_pickup_free_label', 10, 2); 
-function remove_local_pickup_free_label($full_label, $method){ 
-    $full_label = substr($full_label, 0, strpos($full_label, ':')); 
-    return $full_label; 
+add_filter('woocommerce_cart_shipping_method_full_label','remove_local_pickup_free_label', 10, 2);
+function remove_local_pickup_free_label($full_label, $method){
+    $full_label = substr($full_label, 0, strpos($full_label, ':'));
+    return $full_label;
 }
 
 function wdm_remove_parent_category_from_url( $args ) {
@@ -589,7 +589,7 @@ function make_parent_node( $wp_admin_bar ) {
 	$args = array(
 		'id'     => 'new-post',     // id of the existing child node (New > Post)
 		'title'  => 'SMS-send', // alter the title of existing node
-		'href'  => 'https://sms-sms.com.ua/MyCampaign/ToOne/', 
+		'href'  => 'https://sms-sms.com.ua/MyCampaign/ToOne/',
 		'target' => '_blank',
 		'parent' => false,          // set parent to false to make it a top level (parent) node
 	);
@@ -606,7 +606,7 @@ function order_phone_backend($order){
 	if( get_post_meta( $order->id, '_billing_city', true ) ) echo ", НП: " . get_post_meta( $order->id, '_billing_city', true );
 	if( get_post_meta( $order->id, '_billing_address_2', true ) ) echo " - отд:" . get_post_meta( $order->id, '_billing_address_2', true );
 	echo "<br>----------------- ";
-} 
+}
 add_action( 'woocommerce_admin_order_data_after_billing_address', 'order_phone_backend', 10, 1 );
 
 add_action( 'woocommerce_admin_order_totals_after_total', 'vp_add_sub_total2', 100, 1);
@@ -636,17 +636,17 @@ function awoohc_override_checkout_fields( $fields ) {
    $fields['billing']['billing_email']['required'] = false;
    $fields['billing']['billing_last_name']['required'] = false;
    $fields['billing']['billing_first_name']['required'] = false;
-   $fields['billing']['billing_phone']['required'] = true;	
-   $fields['billing']['billing_city']['required'] = false;	
-   $fields['billing']['billing_address_1']['required'] = false;	
-   $fields['billing']['billing_address_2']['required'] = false;		
-   $fields['billing']['billing_postcode']['required'] = false;	
+   $fields['billing']['billing_phone']['required'] = true;
+   $fields['billing']['billing_city']['required'] = false;
+   $fields['billing']['billing_address_1']['required'] = false;
+   $fields['billing']['billing_address_2']['required'] = false;
+   $fields['billing']['billing_postcode']['required'] = false;
    $fields['billing']['billing_last_name']['label'] = 'Имя';
    $fields['billing']['billing_first_name']['label'] = 'Фамилия';
-   $fields['order']['order_comments']['placeholder']='';	
+   $fields['order']['order_comments']['placeholder']='';
 
    unset( $fields['billing']['billing_state'] );
-   unset( $fields['billing']['billing_postcode'] );	
+   unset( $fields['billing']['billing_postcode'] );
    unset( $fields['billing']['billing_billing'] );
    return $fields;
 }
@@ -736,13 +736,13 @@ function alter_shipping_methods($available_gateways){
 			if( isset( $method['rates'][$chosen] ) ) $chosen_titles[] = $method['rates'][ $chosen ]->label;
 		}
 		if( in_array( 'Самовывоз в Киеве (м. Сырец)', $chosen_titles ) ) {
-		
+
 		unset($available_gateways['paypal']);
 		unset($available_gateways['bacs']);
 //		unset($available_gateways['cod']);
 		unset($available_gateways['cheque']);
 		unset($available_gateways['liqpay']);
-		
+
 		}
 		elseif( in_array( 'Отделение Новой Почты', $chosen_titles ) ) {
 //		unset($available_gateways['paypal']);
@@ -762,8 +762,8 @@ function alter_shipping_methods($available_gateways){
 	$unset = false;
 	$category_ids = array( 163 );
 	foreach ( $woocommerce->cart->cart_contents as $key => $values ) {
-    	$terms = get_the_terms( $values['product_id'], 'product_cat' );    
-    	foreach ( $terms as $term ) {        
+    	$terms = get_the_terms( $values['product_id'], 'product_cat' );
+    	foreach ( $terms as $term ) {
         	if ( in_array( $term->term_id, $category_ids ) ) {
             $unset = true;
             break;
@@ -772,7 +772,7 @@ function alter_shipping_methods($available_gateways){
 	}
     if ( $unset == true ) unset( $available_gateways['bacs'] );
     	else unset( $available_gateways['custom'] );
-// End: this part removed some payment methonds (olhov) if there is product in order from definite category (memory)	
+// End: this part removed some payment methonds (olhov) if there is product in order from definite category (memory)
   	return $available_gateways;
 }
 
