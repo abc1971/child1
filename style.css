@@ -381,3 +381,7 @@ ul.products li.product-col .woocommerce-loop-product__title {
 .prdctfltr_filter label {
     font-size: 115% !important;
 }
+
+.pricing-table-classic .price, .product-summary-wrap .price, .product-summary-wrap .product_meta span span, .product-summary-wrap .product_meta span a {
+	color: #0188cc !important;
+}
