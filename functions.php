@@ -7,7 +7,7 @@ function theme_enqueue_styles() {
         array('parent-style')
     );
 }
-//change2
+
 add_filter( 'wc_order_is_editable', '__return_true' );
 
 add_action( 'woocommerce_checkout_create_order', 'additional_hidden_checkout_field_save', 20, 2 );
@@ -27,7 +27,7 @@ function additional_hidden_checkout_field_save( $order, $data ) {
 
 function order_declaration_backend ($order){
     echo "<p><strong>Статус посылки: ";
-	include_once "np.php";
+	  include_once "np.php";
     $np = new NovaPoshtaApi2('fdc3bd4d6aae78eefe2c18eb267f15d5');
     $result = $np->documentsTracking($order->get_meta( '_novaposhta_field_data' ));
     echo(($result['data'][0]['Status']) . "</strong>");
