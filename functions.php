@@ -453,7 +453,16 @@ add_action( 'admin_print_styles', 'sv_wc_cogs_add_order_profit_column_style' );
 function woo_remove_product_tabs( $tabs ) {
     unset( $tabs['additional_information'] );  	// Remove the additional information tab
     return $tabs;
-}*/
+}
+*/
+
+add_filter( 'woocommerce_product_tabs', 'woo_remove_product_tabs', 98 );
+function woo_remove_product_tabs( $tabs ) {
+  if ( isset( $tabs['additional_information'] ) ) {
+    unset( $tabs['additional_information'] );  	// Remove the additional information tab
+  }
+  return $tabs;
+}
 
 
 
