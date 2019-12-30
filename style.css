@@ -389,3 +389,8 @@ ul.products li.product-col .woocommerce-loop-product__title {
 .single_add_to_cart_button {
 	background: #0188cc !important;
 }
+
+/*text-decoration line-through removing*/
+a.rds_hl_nofollow {
+	text-decoration: none !important;
+}
