@@ -28,7 +28,7 @@ function additional_hidden_checkout_field_save( $order, $data ) {
 function order_declaration_backend ($order){
     echo "<p><strong>Статус посылки: ";
 	  include_once "np.php";
-    $np = new NovaPoshtaApi2('fdc3bd4d6aae78eefe2c18eb267f15d5');
+    $np = new NovaPoshtaApi2('29e25f2b28d9f4aeba636f6789dc6e0d');
     $result = $np->documentsTracking($order->get_meta( '_novaposhta_field_data' ));
     echo(($result['data'][0]['Status']) . "</strong>");
 }
@@ -425,7 +425,7 @@ function sv_wc_cogs_add_order_profit_column_content( $column ) {
 		$declaration = preg_replace('/\s+/', '', $declaration);
 		if (strlen($declaration)=== 14) {
 		include_once "np.php";
-        $np = new NovaPoshtaApi2('fdc3bd4d6aae78eefe2c18eb267f15d5');
+        $np = new NovaPoshtaApi2('29e25f2b28d9f4aeba636f6789dc6e0d');
         $result = $np->documentsTracking($declaration);
 		echo mb_strimwidth($result['data'][0]['Status'], 0, 24, "..");
 
