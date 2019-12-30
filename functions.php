@@ -245,15 +245,15 @@ function sms_center_save_meta_box_data( $post_id ){
 		return $post_id;
 	$customeremail = $order->get_billing_email();
 	wp_mail($customeremail, $title_email, $message_email);
-    include_once "smsc_api.php";
-    $order = wc_get_order( $post_id );
-    $r = send_sms(get_post_meta( $order->id, '_billing_phone', true ), $message_sms);
-    if ($r[1] > 0){
-        $order->add_order_note('SMS отослано');
-    }
-    else{
+  include_once "smsc_api.php";
+  $order = wc_get_order( $post_id );
+  $r = send_sms(get_post_meta( $order->id, '_billing_phone', true ), $message_sms);
+  if ($r[1] > 0){
+        $order->add_order_note('Отослано SMS '.$message_sms);
+  }
+  else{
         $order->add_order_note('SMS не отослано, ошибка'.$r[1]);
-    }
+  }
 }
 
 /**
