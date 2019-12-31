@@ -27,6 +27,7 @@ Version:      		1.12
 .shortcode_wysija .wysija-submit { border-radius: 0 4px 4px 0; height: 48px; font-family: Oswald; padding: 10px 25px; text-shadow: none !important; letter-spacing: 0.05em; font-weight: 300; }
 
 /* carousel */
+/*
 .owl-carousel .owl-nav [class*="owl-"] { background: none !important; border: none; color: #747476; font-size: 24px; text-shadow: none; }
 .owl-carousel .owl-nav [class*='owl-']:hover,
 .owl-carousel.show-nav-title .owl-nav [class*="owl-"] { color: #747476; }
@@ -39,7 +40,7 @@ Version:      		1.12
 .products-slider.show-nav-title .owl-nav .owl-prev { left: -40px; }
 .products-slider.show-nav-title .owl-nav .owl-next { right: -40px; }
 .widget .owl-carousel.show-nav-title .owl-nav [class*="owl-"] { font-size: 13px; }
-
+*/
 /* shop */
 ul.products li.product-category .thumb-info h3 { font-size: 14px; font-family: Oswald; font-weight: 400; letter-spacing: 1px; }
 .porto-products .thumb-info .thumb-info-title { background: rgba(23, 23, 23, 0.9); }
