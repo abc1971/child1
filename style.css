@@ -42,6 +42,7 @@ Version:      		1.12
 .widget .owl-carousel.show-nav-title .owl-nav [class*="owl-"] { font-size: 13px; }
 */
 /* shop */
+/*
 ul.products li.product-category .thumb-info h3 { font-size: 14px; font-family: Oswald; font-weight: 400; letter-spacing: 1px; }
 .porto-products .thumb-info .thumb-info-title { background: rgba(23, 23, 23, 0.9); }
 .porto-products.hide-count ul.products li.product-category .thumb-info-wrap { bottom: 0; left: 0; text-align: left; }
@@ -50,7 +51,7 @@ ul.products li.product-category .thumb-info h3 { font-size: 14px; font-family: O
 ul.products li.product-col h3, .product_title { font-family: Oswald, sans-serif; color: #282d3b; }
 ul.products li.product-col h3 { margin-top: 10px; }
 ul.products:not(.list) .product-inner { padding-bottom: 12px; box-shadow: 0 2px 3px -1px rgba(0,0,0,0.1) }
-/*ul.products .add-links-wrap { display: none !important; }*/
+//ul.products .add-links-wrap { display: none !important; }
 .price,
 .product-summary-wrap .price { color: #2b2b2b; }
 ul.products li.product-col.show-outimage-q-onimage-alt:hover .product-inner { box-shadow: 0 2px 15px 0px rgba(0,0,0,0.1); }
@@ -83,7 +84,7 @@ body.woocommerce-page.archive .sidebar-content .widget:first-child .widget-title
 .sidebar-content .filter-item-list a:not(.filter-color):not(.filter-item) { display: inline-block; border: none; font-size: inherit; padding: 0; }
 .widget>div>ul li, .widget>ul li { line-height: 1.7; }
 .sidebar-content .widget>div>ul, .sidebar-content .widget>ul { font-size: 12px; }
-
+*/
 /* footer */
 /*
 .footer-top > .container { padding: 0; max-width: none; position: relative; }
