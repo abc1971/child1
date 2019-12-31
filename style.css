@@ -84,6 +84,7 @@ body.woocommerce-page.archive .sidebar-content .widget:first-child .widget-title
 .sidebar-content .widget>div>ul, .sidebar-content .widget>ul { font-size: 12px; }
 
 /* footer */
+/*
 .footer-top > .container { padding: 0; max-width: none; position: relative; }
 .jr-insta-thumb ul.thumbnails.no-border.jr_col_1 li { width: auto !important; }
 .jr-insta-thumb ul.thumbnails li { display: block; }
@@ -128,8 +129,9 @@ body.woocommerce-page.archive .sidebar-content .widget:first-child .widget-title
 #footer .contact-info li { line-height: 1.5; margin-bottom: 12px; }
 #footer .contact-info .contact-info-label { display: block; color: #fff; text-transform: uppercase; }
 #footer .footer-bottom .footer-center { text-align: right; }
-
+*/
 /* newsletter */
+/*
 .newsletter-popup-form .formError .formErrorContent { color: #fff !important; width: 165px; }
 .newsletter-popup-form .wysija-submit:hover { background: #e6e6e6; }
 .newsletter-popup-form { position: relative; max-width: 700px; width: 100%; margin-left: auto; margin-right: auto; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); background: url(//sw-themes.com/porto_dummy/wp-content/uploads/2016/06/newsletter_popup_bg.jpg) no-repeat; background-size: cover; padding: 30px 30px 10px; background-position: bottom right; }
@@ -146,7 +148,7 @@ body.woocommerce-page.archive .sidebar-content .widget:first-child .widget-title
 .rtl .newsletter-popup-form .wysija-paragraph { float: right; text-align: right; }
 .rtl .newsletter-popup-form .wysija-submit { border-radius: 5px 0 0 5px; float: right; margin-right: -2px; margin-left: 0; }
 .rtl .newsletter-popup-form .wysija-input { border-radius: 0 5px 5px 0; }
-
+*/
 /* rtl */
 .rtl #header.logo-center .header-main .header-right { padding-right: 10px; padding-left: 0; }
 .rtl #header.logo-center .header-main .header-left { padding-left: 10px; padding-right: 0; }
