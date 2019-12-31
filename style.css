@@ -152,6 +152,7 @@ body.woocommerce-page.archive .sidebar-content .widget:first-child .widget-title
 .rtl .newsletter-popup-form .wysija-input { border-radius: 0 5px 5px 0; }
 */
 /* rtl */
+/*
 .rtl #header.logo-center .header-main .header-right { padding-right: 10px; padding-left: 0; }
 .rtl #header.logo-center .header-main .header-left { padding-left: 10px; padding-right: 0; }
 .rtl .shortcode_wysija .wysija-input { border-radius: 0 4px 4px 0; }
@@ -169,7 +170,7 @@ body.woocommerce-page.archive .sidebar-content .widget:first-child .widget-title
     .rtl #footer .share-links { float: left; }
 }
 .rtl #footer .footer-bottom .footer-center { text-align: left; }
-
+*/
 /*hide category products quantity */
 li.product-category p.m-b-sm {
     display: none !important;
