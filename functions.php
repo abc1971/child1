@@ -9,7 +9,7 @@ function theme_enqueue_styles() {
 }
 
 add_filter( 'wc_order_is_editable', '__return_true' );
-
+// тест1
 add_action( 'woocommerce_checkout_create_order', 'additional_hidden_checkout_field_save', 20, 2 );
 function additional_hidden_checkout_field_save( $order, $data ) {
     if( ! isset($data['billing_phone']) ) return;
