@@ -786,62 +786,16 @@ function alter_shipping_methods($available_gateways){
 }
 
 
-//function for show attr on product page
-function cw_woo_attribute(){
+//function for show warehouse on product page
+function wh_woo_attribute(){
     global $product;
-    $attributes = $product->get_attributes();
     $warehouse = $product->get_attribute( 'pa_warehouse' );
-    if ( ! $attributes ) {
+    if ( ! $warehouse ) {
         return;
     }
-
-    // $display_result = '';
-    //
-    // foreach ( $attributes as $attribute ) {
-    //
-    //
-    //     if ( $attribute->get_variation() ) {
-    //         continue;
-    //     }
-    //     $name = $attribute->get_name();
-    //     if ( $attribute->is_taxonomy() ) {
-    //
-    //         $terms = wp_get_post_terms( $product->get_id(), $name, 'all' );
-    //
-    //         $cwtax = $terms[0]->taxonomy;
-    //
-    //         $cw_object_taxonomy = get_taxonomy($cwtax);
-    //
-    //         if ( isset ($cw_object_taxonomy->labels->singular_name) ) {
-    //             $tax_label = $cw_object_taxonomy->labels->singular_name;
-    //         } elseif ( isset( $cw_object_taxonomy->label ) ) {
-    //             $tax_label = $cw_object_taxonomy->label;
-    //             if ( 0 === strpos( $tax_label, 'Product ' ) ) {
-    //                 $tax_label = substr( $tax_label, 8 );
-    //             }
-    //         }
-    //         $display_result .= $tax_label . ': ';
-    //         $tax_terms = array();
-    //         foreach ( $terms as $term ) {
-    //             $single_term = esc_html( $term->name );
-    //             array_push( $tax_terms, $single_term );
-    //         }
-    //         $display_result .= implode(', ', $tax_terms) .  '<br />';
-    //
-    //     } else {
-    //         $display_result .= $name . ': ';
-    //         $display_result .= esc_html( implode( ', ', $attribute->get_options() ) ) . '<br />';
-    //
-    //     }
-    // }
-    // echo $display_result;
-    echo $warehouse . '=== ';
-//    echo $attributes->pa_warehouse;
-//    var_dump($attributes->pa_warehouse);
-//    echo $attributes.
-  //  var_dump($attributes);
+    echo $warehouse;
 }
 
-add_action('woocommerce_single_product_summary', 'cw_woo_attribute', 25);
-//839-1
+add_action('woocommerce_after_add_to_cart_form', 'wh_woo_attribute', 25);
+
 ?>
