@@ -834,7 +834,7 @@ function cw_woo_attribute(){
         }
     }
     echo $display_result;
-    echo $attributes["pa_warehouse"]. '::: ';
+    echo $attributes["pa_warehouse"];
 //    echo $attributes.
   //  var_dump($attributes);
 }
