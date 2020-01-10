@@ -836,5 +836,5 @@ function cw_woo_attribute(){
 }
 
 add_action('woocommerce_single_product_summary', 'cw_woo_attribute', 25);
-
+//839
 ?>
