@@ -830,10 +830,12 @@ function cw_woo_attribute(){
         } else {
             $display_result .= $name . ': ';
             $display_result .= esc_html( implode( ', ', $attribute->get_options() ) ) . '<br />';
+            var_dump($attribute);
         }
     }
     echo $display_result;
-    var_dump($attributes);
+//    echo $attributes.
+  //  var_dump($attributes);
 }
 
 add_action('woocommerce_single_product_summary', 'cw_woo_attribute', 25);
