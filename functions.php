@@ -830,10 +830,11 @@ function cw_woo_attribute(){
         } else {
             $display_result .= $name . ': ';
             $display_result .= esc_html( implode( ', ', $attribute->get_options() ) ) . '<br />';
-            var_dump($attribute);
+      //      var_dump($attribute);
         }
     }
     echo $display_result;
+    echo $attributes["pa_warehouse"]. '::: ';
 //    echo $attributes.
   //  var_dump($attributes);
 }
