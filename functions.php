@@ -834,7 +834,7 @@ function cw_woo_attribute(){
     }
     echo $display_result;
 }
-
+//11
 add_action('woocommerce_single_product_summary', 'cw_woo_attribute', 25);
 //839-1
 ?>
