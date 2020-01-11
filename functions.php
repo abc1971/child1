@@ -785,7 +785,6 @@ function alter_shipping_methods($available_gateways){
   	return $available_gateways;
 }
 
-
 //function for show warehouse on product page
 function wh_woo_attribute(){
     global $product;
@@ -793,7 +792,16 @@ function wh_woo_attribute(){
     if ( ! $warehouse ) {
         return;
     }
-    echo $warehouse;
+	$pstyle1 = '<p style="color:#DCDCDC;font-size:46px;">';
+	echo $pstyle1;
+	echo $warehouse;
+	$days = $product->get_attribute( 'pa_days' );
+	if ( ! $days  ) {
+        return;
+    }
+    echo $days;
+	$pstyle2 = '</p>';
+	echo $pstyle2;
 }
 
 add_action('woocommerce_after_add_to_cart_form', 'wh_woo_attribute', 25);
