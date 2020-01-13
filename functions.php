@@ -792,16 +792,13 @@ function wh_woo_attribute(){
     if ( ! $warehouse ) {
         return;
     }
-	$pstyle1 = '<p style="color:#DCDCDC;font-size:46px;">';
-	echo $pstyle1;
-	echo $warehouse;
-	$days = $product->get_attribute( 'pa_days' );
-	if ( ! $days  ) {
+	  echo '<p style="color:#DDDDDD;font-size:20px;">' . $warehouse;
+	  $days = $product->get_attribute( 'pa_days' );
+	  if ( ! $days  ) {
+		    echo '</p>';
         return;
     }
-    echo $days;
-	$pstyle2 = '</p>';
-	echo $pstyle2;
+    echo $days . '</p>';
 }
 
 add_action('woocommerce_after_add_to_cart_form', 'wh_woo_attribute', 25);
