@@ -369,9 +369,7 @@ tr.cart-subtotal {
     display: none !important;
 }
 
-#content > article > div > div > div > ul > li.woocommerce-order-overview__total.total {
-    display: none !important;
-}
+
 
 
 

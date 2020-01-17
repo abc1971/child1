@@ -8,6 +8,18 @@ function theme_enqueue_styles() {
     );
 }
 
+<<<<<<< HEAD
+=======
+
+// Update CSS within in Admin
+function admin_style() {
+  wp_enqueue_style('admin-styles', get_stylesheet_directory_uri().'/admin-style.css');
+}
+add_action('admin_enqueue_scripts', 'admin_style');
+
+
+
+>>>>>>> fe9a0da708f30d1a01b69fa13c6c86927ff59802
 add_filter( 'wc_order_is_editable', '__return_true' );
 // тест1
 add_action( 'woocommerce_checkout_create_order', 'additional_hidden_checkout_field_save', 20, 2 );
@@ -618,13 +630,13 @@ function order_phone_backend($order){
 }
 add_action( 'woocommerce_admin_order_data_after_billing_address', 'order_phone_backend', 10, 1 );
 
-add_action( 'woocommerce_admin_order_totals_after_total', 'vp_add_sub_total2', 100, 1);
+add_action( 'woocommerce_admin_order_totals_after_discount', 'vp_add_sub_total2', 100, 1);
 function vp_add_sub_total2( $order_id ) {
 	$order = wc_get_order( $order_id );
 	?><tr style="color: blue;">
 	<td class="label">Сумма по товарам:</td>
 	<td width="1%"></td>
-	<td><?php echo wc_price($order->get_subtotal());?></td>
+	<td><?php echo wc_price($order->get_subtotal()-$order->get_discount_total());?></td>
 	</tr><?php
 }
 

@@ -1,0 +1,3 @@
+#woocommerce-order-items > div > div.wc-order-data-row.wc-order-totals-items.wc-order-items-editable > table > tbody > tr:nth-child(3) {
+  display: none !important;
+}
