@@ -614,19 +614,20 @@ function make_parent_node( $wp_admin_bar ) {
 /**
  * add fields names for detailed info for drop shipping
  */
-function order_phone_backend($order){
-
+function order_details_backend($order){
+  $item = $order->get_items();
+	echo "-----------------<br>";
+    foreach($item as $value) {
+		echo $value['name'] . " " . $value['qty'] . "шт * " . $value['line_total']/$value['qty'] ;
+		echo "<br>";
+	}
+	echo "наложка / оплачено на итого ";
+	echo $order->get_subtotal()-$order->get_discount_total() . "грн<br>";
     echo get_post_meta( $order->id, '_billing_first_name', true )  . " " . get_post_meta( $order->id, '_billing_last_name', true )  . ", " . get_post_meta( $order->id, '_billing_phone', true ) ;
 	if( get_post_meta( $order->id, '_billing_city', true ) ) echo ", НП: " . get_post_meta( $order->id, '_billing_city', true );
 	if( get_post_meta( $order->id, '_billing_address_2', true ) ) echo " - отд:" . get_post_meta( $order->id, '_billing_address_2', true );
-
-	  $item   = '';
-      $item = $order->get_items();
-      foreach($item as $value)
-			echo $value['name'];
-  echo "<br>----------------- ";
 }
-add_action( 'woocommerce_admin_order_data_after_billing_address', 'order_phone_backend', 10, 1 );
+add_action( 'woocommerce_admin_order_data_after_billing_address', 'order_details_backend', 10, 1 );
 
 add_action( 'woocommerce_admin_order_totals_after_discount', 'vp_add_sub_total2', 100, 1);
 function vp_add_sub_total2( $order_id ) {
