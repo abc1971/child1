@@ -611,16 +611,19 @@ function make_parent_node( $wp_admin_bar ) {
 	$wp_admin_bar->add_node( $args );
 }
 
-
-
 /**
  * add fields names for detailed info for drop shipping
  */
 function order_phone_backend($order){
+
     echo get_post_meta( $order->id, '_billing_first_name', true )  . " " . get_post_meta( $order->id, '_billing_last_name', true )  . ", " . get_post_meta( $order->id, '_billing_phone', true ) ;
 	if( get_post_meta( $order->id, '_billing_city', true ) ) echo ", НП: " . get_post_meta( $order->id, '_billing_city', true );
 	if( get_post_meta( $order->id, '_billing_address_2', true ) ) echo " - отд:" . get_post_meta( $order->id, '_billing_address_2', true );
-print_r($order);
+
+	  $item   = '';
+      $item = $order->get_items();
+      foreach($item as $value)
+			echo $value['name'];
   echo "<br>----------------- ";
 }
 add_action( 'woocommerce_admin_order_data_after_billing_address', 'order_phone_backend', 10, 1 );
