@@ -16,8 +16,6 @@ function admin_style() {
 }
 add_action('admin_enqueue_scripts', 'admin_style');
 
-
->>>>>>> fe9a0da708f30d1a01b69fa13c6c86927ff59802
 add_filter( 'wc_order_is_editable', '__return_true' );
 
 add_action( 'woocommerce_checkout_create_order', 'additional_hidden_checkout_field_save', 20, 2 );
