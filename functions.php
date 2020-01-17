@@ -8,8 +8,6 @@ function theme_enqueue_styles() {
     );
 }
 
-<<<<<<< HEAD
-=======
 
 // Update CSS within in Admin
 function admin_style() {
@@ -17,11 +15,14 @@ function admin_style() {
 }
 add_action('admin_enqueue_scripts', 'admin_style');
 
+<<<<<<< HEAD
+=======
+
 
 
 >>>>>>> fe9a0da708f30d1a01b69fa13c6c86927ff59802
 add_filter( 'wc_order_is_editable', '__return_true' );
-// тест1
+
 add_action( 'woocommerce_checkout_create_order', 'additional_hidden_checkout_field_save', 20, 2 );
 function additional_hidden_checkout_field_save( $order, $data ) {
     if( ! isset($data['billing_phone']) ) return;
@@ -96,34 +97,34 @@ function save_novaposhta_meta_box_field_value( $post_id ) {
 
 // Display nova poshta tracking info and urls on customer email
 
-add_action( 'woocommerce_email_after_order_table', 'add_novaposhta_tracking_to_customer_complete_order_email', 20, 4 );
-function add_novaposhta_tracking_to_customer_complete_order_email( $order, $sent_to_admin, $plain_text, $email ) {
-    if ( $sent_to_admin )
-            return; // Exit
-
-    $novaposhta_value = $order->get_meta( '_novaposhta_field_data' );
-
-    if ( ! empty($novaposhta_value) ) {
-        $novaposhta_url = 'https://novaposhta.ua/tracking';
-        $tracking_url = 'https://novaposhta.ua/tracking'.$novaposhta_value;
-        $title        = __("Отследите свой заказ","woocommerce");
-        $message      = '<p><strong>'. __("Декларация НП", "woocommerce").':</strong> ' . $novaposhta_value . '</p>
-        <p>'. sprintf( __("Вы можете отследить Вашу посылку на %s или непосредственно из %s", "woocommerce"),
-        '<a href="'.$novaposhta_url.'" target="_blank">'.__("novaposhta сайте", "woocommerce").'</a>',
-        '<a href="'.$tracking_url.'" target="_blank">'.__("нашем сайте", "woocommerce").'</a>.</p>');
-        echo '<style>
-        .tracking table {width: 100%; font-family: \'Helvetica Neue\', Helvetica, Roboto, Arial, sans-serif;
-            color: #737373; border: 1px solid #e4e4e4; margin-bottom:8px;}
-        .tracking table td{text-align: left; border-top-width: 4px; color: #737373; border: 1px solid #e4e4e4;
-            padding: 12px; padding-bottom: 4px;}
-        </style>
-        <div class="tracking">
-        <h2>' . $title . '</h2>
-        <table cellspacing="0" cellpadding="6">
-            <tr><td>'.$message.'</td></tr>
-        </table></div><br>';
-    }
-}
+// add_action( 'woocommerce_email_after_order_table', 'add_novaposhta_tracking_to_customer_complete_order_email', 20, 4 );
+// function add_novaposhta_tracking_to_customer_complete_order_email( $order, $sent_to_admin, $plain_text, $email ) {
+//     if ( $sent_to_admin )
+//             return; // Exit
+//
+//     $novaposhta_value = $order->get_meta( '_novaposhta_field_data' );
+//
+//     if ( ! empty($novaposhta_value) ) {
+//         $novaposhta_url = 'https://novaposhta.ua/tracking';
+//         $tracking_url = 'https://novaposhta.ua/tracking'.$novaposhta_value;
+//         $title        = __("Отследите свой заказ","woocommerce");
+//         $message      = '<p><strong>'. __("Декларация НП", "woocommerce").':</strong> ' . $novaposhta_value . '</p>
+//         <p>'. sprintf( __("Вы можете отследить Вашу посылку на %s или непосредственно из %s", "woocommerce"),
+//         '<a href="'.$novaposhta_url.'" target="_blank">'.__("novaposhta сайте", "woocommerce").'</a>',
+//         '<a href="'.$tracking_url.'" target="_blank">'.__("нашем сайте", "woocommerce").'</a>.</p>');
+//         echo '<style>
+//         .tracking table {width: 100%; font-family: \'Helvetica Neue\', Helvetica, Roboto, Arial, sans-serif;
+//             color: #737373; border: 1px solid #e4e4e4; margin-bottom:8px;}
+//         .tracking table td{text-align: left; border-top-width: 4px; color: #737373; border: 1px solid #e4e4e4;
+//             padding: 12px; padding-bottom: 4px;}
+//         </style>
+//         <div class="tracking">
+//         <h2>' . $title . '</h2>
+//         <table cellspacing="0" cellpadding="6">
+//             <tr><td>'.$message.'</td></tr>
+//         </table></div><br>';
+//     }
+// }
 
 
 // Add SMS Center metabox
@@ -580,9 +581,7 @@ function custom_delivery_flat_rate_cost_calculation( $rates, $package )
 		$rates[$rate_id]->cost = $cart_weight;
 		            // Taxes rate cost (if enabled)
         $taxes = array();
- /*       foreach ($rates[$rate_key]->taxes as $key => $tax){
-                $taxes[$key] = 55;
-        }*/
+
         // Set the new taxes costs
         $rates[$rate_key]->taxes = $taxes;
 	}
@@ -626,7 +625,8 @@ function order_phone_backend($order){
     echo get_post_meta( $order->id, '_billing_first_name', true )  . " " . get_post_meta( $order->id, '_billing_last_name', true )  . ", " . get_post_meta( $order->id, '_billing_phone', true ) ;
 	if( get_post_meta( $order->id, '_billing_city', true ) ) echo ", НП: " . get_post_meta( $order->id, '_billing_city', true );
 	if( get_post_meta( $order->id, '_billing_address_2', true ) ) echo " - отд:" . get_post_meta( $order->id, '_billing_address_2', true );
-	echo "<br>----------------- ";
+print_r($order);
+  echo "<br>----------------- ";
 }
 add_action( 'woocommerce_admin_order_data_after_billing_address', 'order_phone_backend', 10, 1 );
 
