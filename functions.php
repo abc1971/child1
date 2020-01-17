@@ -10,9 +10,6 @@ function theme_enqueue_styles() {
 
 
 
-<<<<<<< HEAD
-=======
-
 // Update CSS within in Admin
 function admin_style() {
   wp_enqueue_style('admin-styles', get_stylesheet_directory_uri().'/admin-style.css');
