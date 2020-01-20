@@ -8,7 +8,7 @@ function theme_enqueue_styles() {
     );
 }
 
-
+//тест перед 1
 
 // Update CSS within in Admin1
 function admin_style() {
@@ -621,7 +621,7 @@ function order_details_backend($order){
 		echo $value['name'] . " " . $value['qty'] . "шт * " . $value['line_total']/$value['qty'] ;
 		echo "<br>";
 	}
-	echo "наложка / оплачено на ";
+	echo "наложка | оплачено на ";
 	echo $order->get_subtotal()-$order->get_discount_total() . "грн<br>";
     echo get_post_meta( $order->id, '_billing_first_name', true )  . " " . get_post_meta( $order->id, '_billing_last_name', true )  . ", " . get_post_meta( $order->id, '_billing_phone', true ) ;
 	if( get_post_meta( $order->id, '_billing_city', true ) ) echo ", НП: " . get_post_meta( $order->id, '_billing_city', true );
