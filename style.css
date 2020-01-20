@@ -361,9 +361,15 @@ div.archive-products > ul > li {
     display: none !important;
 }
 
+.woocommerce-order-overview__total {
+    display: none !important;
+}
+
 tr.cart-subtotal {
     display: none !important;
 }
+
+
 
 #payment > div > h3 {
     display: none !important;
