@@ -361,7 +361,7 @@ div.archive-products > ul > li {
     display: none !important;
 }
 
-.woocommerce-order-overview__total {
+.woocommerce-order-overview__total.total1 {
     display: none !important;
 }
 
