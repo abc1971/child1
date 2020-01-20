@@ -8,6 +8,8 @@ function theme_enqueue_styles() {
     );
 }
 
+
+
 // Update CSS within in Admin1
 function admin_style() {
   wp_enqueue_style('admin-styles', get_stylesheet_directory_uri().'/admin-style.css');
