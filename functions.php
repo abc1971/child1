@@ -610,208 +610,208 @@ function make_parent_node( $wp_admin_bar ) {
 	);
 	$wp_admin_bar->add_node( $args );
 }
-
-/**
- * add fields names for detailed info for drop shipping
- */
-function order_details_backend($order){
-  $item = $order->get_items();
-	echo "-----------------<br>";
-    foreach($item as $value) {
-		echo $value['name'] . " " . $value['qty'] . "шт * " . $value['line_total']/$value['qty'] ;
-		echo "<br>";
-	}
-	echo "наложка / оплачено на ";
-	echo $order->get_subtotal()-$order->get_discount_total() . "грн<br>";
-    echo get_post_meta( $order->id, '_billing_first_name', true )  . " " . get_post_meta( $order->id, '_billing_last_name', true )  . ", " . get_post_meta( $order->id, '_billing_phone', true ) ;
-	if( get_post_meta( $order->id, '_billing_city', true ) ) echo ", НП: " . get_post_meta( $order->id, '_billing_city', true );
-	if( get_post_meta( $order->id, '_billing_address_2', true ) ) echo " - отд:" . get_post_meta( $order->id, '_billing_address_2', true );
-}
-add_action( 'woocommerce_admin_order_data_after_billing_address', 'order_details_backend', 10, 1 );
-
-add_action( 'woocommerce_admin_order_totals_after_discount', 'vp_add_sub_total2', 100, 1);
-function vp_add_sub_total2( $order_id ) {
-	$order = wc_get_order( $order_id );
-	?><tr style="color: blue;">
-	<td class="label">Сумма по товарам:</td>
-	<td width="1%"></td>
-	<td><?php echo wc_price($order->get_subtotal()-$order->get_discount_total());?></td>
-	</tr><?php
-}
-
-/*
- * сортировка и переименовывание полей в чеке
- */
-add_filter( 'woocommerce_checkout_fields', 'awoohc_override_checkout_fields' );
-function awoohc_override_checkout_fields( $fields ) {
-
-   $fields['billing']['billing_email']['required'] = false;
-   $fields['billing']['billing_last_name']['required'] = false;
-   $fields['billing']['billing_first_name']['priority'] = 1;
-   $fields['billing']['billing_last_name']['priority'] = 2;
-   $fields['billing']['billing_phone']['priority'] = 30;
-   $fields['billing']['billing_postcode']['priority'] = 75;
-   $fields['billing']['billing_email']['priority'] = 110;
-
-   $fields['billing']['billing_email']['required'] = false;
-   $fields['billing']['billing_last_name']['required'] = false;
-   $fields['billing']['billing_first_name']['required'] = false;
-   $fields['billing']['billing_phone']['required'] = true;
-   $fields['billing']['billing_city']['required'] = false;
-   $fields['billing']['billing_address_1']['required'] = false;
-   $fields['billing']['billing_address_2']['required'] = false;
-   $fields['billing']['billing_postcode']['required'] = false;
-   $fields['billing']['billing_last_name']['label'] = 'Имя';
-   $fields['billing']['billing_first_name']['label'] = 'Фамилия';
-   $fields['order']['order_comments']['placeholder']='';
-
-   unset( $fields['billing']['billing_state'] );
-   unset( $fields['billing']['billing_postcode'] );
-   unset( $fields['billing']['billing_billing'] );
-   return $fields;
-}
-
-add_filter( 'woocommerce_default_address_fields', 'custom_override_default_locale_fields' );
-function custom_override_default_locale_fields( $fields ) {
-    $fields['state']['priority'] = 5;
-	$fields['city']['priority'] = 60;
-    $fields['address_1']['priority'] = 90;
-    $fields['address_2']['priority'] = 100;
-	$fields['address_2']['label'] = 'Отделение Новой Почты';
-	$fields['address_2']['required'] = 'false';
-	$fields['address_2']['placeholder'] = '№ отделения';
-    $fields['address_1']['placeholder'] = 'Укажите улицу, дом и квартиру';
-
-    return $fields;
-}
-
-// Conditional Show hide checkout fields based on chosen shipping methods
-add_action( 'wp_footer', 'conditionally_hidding_billing_company' );
-function conditionally_hidding_billing_company(){
-    // Only on checkout page
-    if( ! is_checkout() ) return;
-
-    // HERE your shipping methods rate ID "Home delivery"
-    $home_delivery = 'local_pickup:12';
-	$nova_delivery = 'flat_rate:16';
-    ?>
-    <script>
-        jQuery(function($){
-            // Choosen shipping method selectors slug
-            var shipMethod = 'input[name^="shipping_method"]',
-                shipMethodChecked = shipMethod+':checked';
-
-            // Function that shows or hide imput select fields
-            function showHide( actionToDo='show', selector='' ){
-                if( actionToDo == 'show' )
-                    $(selector).show( 200, function(){
-           //             $(this).addClass("validate-required");
-                    });
-                else
-                    $(selector).hide( 200, function(){
-           //             $(this).removeClass("validate-required");
-                    });
-                $(selector).removeClass("woocommerce-validated");
-                $(selector).removeClass("woocommerce-invalid woocommerce-invalid-required-field");
-            }
-
-            // Initialising: Hide if choosen shipping method is "Home delivery"
-            if( $(shipMethodChecked).val() == '<?php echo $home_delivery; ?>' ){
-                showHide('hide','#billing_city_field' );
-			    showHide('hide','#billing_address_1_field' );
-				showHide('hide','#billing_address_2_field' );
-				}
-
-            // Live event (When shipping method is changed)
-            $( 'form.checkout' ).on( 'change', shipMethod, function() {
-                if ( $(shipMethodChecked).val() == '<?php echo $home_delivery; ?>' ){
-                    showHide('hide','#billing_city_field' );
-				    showHide('hide','#billing_address_1_field' );
-					showHide('hide','#billing_address_2_field' );
-				}
-                else if ( $(shipMethodChecked).val() == '<?php echo $nova_delivery; ?>' ){
-                    showHide('show','#billing_city_field');
-				    showHide('show','#billing_address_2_field');
-					showHide('hide','#billing_address_1_field');
-					}
-					else {
-                    	showHide('show','#billing_city_field');
-				    	showHide('hide','#billing_address_2_field');
-						showHide('show','#billing_address_1_field');
-					}
-            });
-        });
-    </script>
-    <?php
-}
-
-add_action('woocommerce_available_payment_gateways', 'alter_shipping_methods');
-function alter_shipping_methods($available_gateways){
-	global $woocommerce;
-	$chosen_titles = array();
-	$available_methods = $woocommerce->shipping->get_packages();
-	$chosen_rates = ( isset( $woocommerce->session ) ) ? $woocommerce->session->get( 'chosen_shipping_methods' ) : array();
-	foreach ($available_methods as $method){
-		foreach ($chosen_rates as $chosen) {
-			if( isset( $method['rates'][$chosen] ) ) $chosen_titles[] = $method['rates'][ $chosen ]->label;
-		}
-		if( in_array( 'Самовывоз в Киеве (м. Сырец)', $chosen_titles ) ) {
-
-		unset($available_gateways['paypal']);
-		unset($available_gateways['bacs']);
-//		unset($available_gateways['cod']);
-		unset($available_gateways['cheque']);
-		unset($available_gateways['liqpay']);
-
-		}
-		elseif( in_array( 'Отделение Новой Почты', $chosen_titles ) ) {
-//		unset($available_gateways['paypal']);
-//		unset($available_gateways['bacs']);
-		unset($available_gateways['cod']);
-//		unset($available_gateways['cheque']);
-//		unset($available_gateways['liqpay']);
-		}
-		elseif( in_array( 'Курьером на адрес', $chosen_titles ) ) {
-//		unset($available_gateways['bacs']);
-		unset($available_gateways['cod']);
-		unset($available_gateways['cheque']);
-	}
-
-  }
-// Start: this part will remove some payment methonds (olhov) if there is product in order from definite category (memory)
-	$unset = false;
-	$category_ids = array( 163 );
-	foreach ( $woocommerce->cart->cart_contents as $key => $values ) {
-    	$terms = get_the_terms( $values['product_id'], 'product_cat' );
-    	foreach ( $terms as $term ) {
-        	if ( in_array( $term->term_id, $category_ids ) ) {
-            $unset = true;
-            break;
-        	}
-    	}
-	}
-    if ( $unset == true ) unset( $available_gateways['bacs'] );
-    	else unset( $available_gateways['custom'] );
-// End: this part removed some payment methonds (olhov) if there is product in order from definite category (memory)
-  	return $available_gateways;
-}
-
-//function for show warehouse on product page
-function wh_woo_attribute(){
-    global $product;
-    $warehouse = $product->get_attribute( 'pa_warehouse' );
-    if ( ! $warehouse ) {
-        return;
-    }
-	  echo '<p style="color:#DDDDDD;font-size:20px;">' . $warehouse;
-	  $days = $product->get_attribute( 'pa_days' );
-	  if ( ! $days  ) {
-		    echo '</p>';
-        return;
-    }
-    echo $days . '</p>';
-}
-
-add_action('woocommerce_after_add_to_cart_form', 'wh_woo_attribute', 25);
+//
+// /**
+//  * add fields names for detailed info for drop shipping
+//  */
+// function order_details_backend($order){
+//   $item = $order->get_items();
+// 	echo "-----------------<br>";
+//     foreach($item as $value) {
+// 		echo $value['name'] . " " . $value['qty'] . "шт * " . $value['line_total']/$value['qty'] ;
+// 		echo "<br>";
+// 	}
+// 	echo "наложка | оплачено на ";
+// 	echo $order->get_subtotal()-$order->get_discount_total() . "грн<br>";
+//     echo get_post_meta( $order->id, '_billing_first_name', true )  . " " . get_post_meta( $order->id, '_billing_last_name', true )  . ", " . get_post_meta( $order->id, '_billing_phone', true ) ;
+// 	if( get_post_meta( $order->id, '_billing_city', true ) ) echo ", НП: " . get_post_meta( $order->id, '_billing_city', true );
+// 	if( get_post_meta( $order->id, '_billing_address_2', true ) ) echo " - отд:" . get_post_meta( $order->id, '_billing_address_2', true );
+// }
+// add_action( 'woocommerce_admin_order_data_after_billing_address', 'order_details_backend', 10, 1 );
+//
+// add_action( 'woocommerce_admin_order_totals_after_discount', 'vp_add_sub_total2', 100, 1);
+// function vp_add_sub_total2( $order_id ) {
+// 	$order = wc_get_order( $order_id );
+// 	?><tr style="color: blue;">
+// 	<td class="label">Сумма по товарам:</td>
+// 	<td width="1%"></td>
+// 	<td><?php echo wc_price($order->get_subtotal()-$order->get_discount_total());?></td>
+// 	</tr><?php
+// }
+//
+// /*
+//  * сортировка и переименовывание полей в чеке
+//  */
+// add_filter( 'woocommerce_checkout_fields', 'awoohc_override_checkout_fields' );
+// function awoohc_override_checkout_fields( $fields ) {
+//
+//    $fields['billing']['billing_email']['required'] = false;
+//    $fields['billing']['billing_last_name']['required'] = false;
+//    $fields['billing']['billing_first_name']['priority'] = 1;
+//    $fields['billing']['billing_last_name']['priority'] = 2;
+//    $fields['billing']['billing_phone']['priority'] = 30;
+//    $fields['billing']['billing_postcode']['priority'] = 75;
+//    $fields['billing']['billing_email']['priority'] = 110;
+//
+//    $fields['billing']['billing_email']['required'] = false;
+//    $fields['billing']['billing_last_name']['required'] = false;
+//    $fields['billing']['billing_first_name']['required'] = false;
+//    $fields['billing']['billing_phone']['required'] = true;
+//    $fields['billing']['billing_city']['required'] = false;
+//    $fields['billing']['billing_address_1']['required'] = false;
+//    $fields['billing']['billing_address_2']['required'] = false;
+//    $fields['billing']['billing_postcode']['required'] = false;
+//    $fields['billing']['billing_last_name']['label'] = 'Имя';
+//    $fields['billing']['billing_first_name']['label'] = 'Фамилия';
+//    $fields['order']['order_comments']['placeholder']='';
+//
+//    unset( $fields['billing']['billing_state'] );
+//    unset( $fields['billing']['billing_postcode'] );
+//    unset( $fields['billing']['billing_billing'] );
+//    return $fields;
+// }
+//
+// add_filter( 'woocommerce_default_address_fields', 'custom_override_default_locale_fields' );
+// function custom_override_default_locale_fields( $fields ) {
+//     $fields['state']['priority'] = 5;
+// 	$fields['city']['priority'] = 60;
+//     $fields['address_1']['priority'] = 90;
+//     $fields['address_2']['priority'] = 100;
+// 	$fields['address_2']['label'] = 'Отделение Новой Почты';
+// 	$fields['address_2']['required'] = 'false';
+// 	$fields['address_2']['placeholder'] = '№ отделения';
+//     $fields['address_1']['placeholder'] = 'Укажите улицу, дом и квартиру';
+//
+//     return $fields;
+// }
+//
+// // Conditional Show hide checkout fields based on chosen shipping methods
+// add_action( 'wp_footer', 'conditionally_hidding_billing_company' );
+// function conditionally_hidding_billing_company(){
+//     // Only on checkout page
+//     if( ! is_checkout() ) return;
+//
+//     // HERE your shipping methods rate ID "Home delivery"
+//     $home_delivery = 'local_pickup:12';
+// 	$nova_delivery = 'flat_rate:16';
+//     ?>
+//     <script>
+//         jQuery(function($){
+//             // Choosen shipping method selectors slug
+//             var shipMethod = 'input[name^="shipping_method"]',
+//                 shipMethodChecked = shipMethod+':checked';
+//
+//             // Function that shows or hide imput select fields
+//             function showHide( actionToDo='show', selector='' ){
+//                 if( actionToDo == 'show' )
+//                     $(selector).show( 200, function(){
+//            //             $(this).addClass("validate-required");
+//                     });
+//                 else
+//                     $(selector).hide( 200, function(){
+//            //             $(this).removeClass("validate-required");
+//                     });
+//                 $(selector).removeClass("woocommerce-validated");
+//                 $(selector).removeClass("woocommerce-invalid woocommerce-invalid-required-field");
+//             }
+//
+//             // Initialising: Hide if choosen shipping method is "Home delivery"
+//             if( $(shipMethodChecked).val() == '<?php echo $home_delivery; ?>' ){
+//                 showHide('hide','#billing_city_field' );
+// 			    showHide('hide','#billing_address_1_field' );
+// 				showHide('hide','#billing_address_2_field' );
+// 				}
+//
+//             // Live event (When shipping method is changed)
+//             $( 'form.checkout' ).on( 'change', shipMethod, function() {
+//                 if ( $(shipMethodChecked).val() == '<?php echo $home_delivery; ?>' ){
+//                     showHide('hide','#billing_city_field' );
+// 				    showHide('hide','#billing_address_1_field' );
+// 					showHide('hide','#billing_address_2_field' );
+// 				}
+//                 else if ( $(shipMethodChecked).val() == '<?php echo $nova_delivery; ?>' ){
+//                     showHide('show','#billing_city_field');
+// 				    showHide('show','#billing_address_2_field');
+// 					showHide('hide','#billing_address_1_field');
+// 					}
+// 					else {
+//                     	showHide('show','#billing_city_field');
+// 				    	showHide('hide','#billing_address_2_field');
+// 						showHide('show','#billing_address_1_field');
+// 					}
+//             });
+//         });
+//     </script>
+//     <?php
+// }
+//
+// add_action('woocommerce_available_payment_gateways', 'alter_shipping_methods');
+// function alter_shipping_methods($available_gateways){
+// 	global $woocommerce;
+// 	$chosen_titles = array();
+// 	$available_methods = $woocommerce->shipping->get_packages();
+// 	$chosen_rates = ( isset( $woocommerce->session ) ) ? $woocommerce->session->get( 'chosen_shipping_methods' ) : array();
+// 	foreach ($available_methods as $method){
+// 		foreach ($chosen_rates as $chosen) {
+// 			if( isset( $method['rates'][$chosen] ) ) $chosen_titles[] = $method['rates'][ $chosen ]->label;
+// 		}
+// 		if( in_array( 'Самовывоз в Киеве (м. Сырец)', $chosen_titles ) ) {
+//
+// 		unset($available_gateways['paypal']);
+// 		unset($available_gateways['bacs']);
+// //		unset($available_gateways['cod']);
+// 		unset($available_gateways['cheque']);
+// 		unset($available_gateways['liqpay']);
+//
+// 		}
+// 		elseif( in_array( 'Отделение Новой Почты', $chosen_titles ) ) {
+// //		unset($available_gateways['paypal']);
+// //		unset($available_gateways['bacs']);
+// 		unset($available_gateways['cod']);
+// //		unset($available_gateways['cheque']);
+// //		unset($available_gateways['liqpay']);
+// 		}
+// 		elseif( in_array( 'Курьером на адрес', $chosen_titles ) ) {
+// //		unset($available_gateways['bacs']);
+// 		unset($available_gateways['cod']);
+// 		unset($available_gateways['cheque']);
+// 	}
+//
+//   }
+// // Start: this part will remove some payment methonds (olhov) if there is product in order from definite category (memory)
+// 	$unset = false;
+// 	$category_ids = array( 163 );
+// 	foreach ( $woocommerce->cart->cart_contents as $key => $values ) {
+//     	$terms = get_the_terms( $values['product_id'], 'product_cat' );
+//     	foreach ( $terms as $term ) {
+//         	if ( in_array( $term->term_id, $category_ids ) ) {
+//             $unset = true;
+//             break;
+//         	}
+//     	}
+// 	}
+//     if ( $unset == true ) unset( $available_gateways['bacs'] );
+//     	else unset( $available_gateways['custom'] );
+// // End: this part removed some payment methonds (olhov) if there is product in order from definite category (memory)
+//   	return $available_gateways;
+// }
+//
+// //function for show warehouse on product page
+// function wh_woo_attribute(){
+//     global $product;
+//     $warehouse = $product->get_attribute( 'pa_warehouse' );
+//     if ( ! $warehouse ) {
+//         return;
+//     }
+// 	  echo '<p style="color:#DDDDDD;font-size:20px;">' . $warehouse;
+// 	  $days = $product->get_attribute( 'pa_days' );
+// 	  if ( ! $days  ) {
+// 		    echo '</p>';
+//         return;
+//     }
+//     echo $days . '</p>';
+// }
+//
+// add_action('woocommerce_after_add_to_cart_form', 'wh_woo_attribute', 25);
 
 ?>
