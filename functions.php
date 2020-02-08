@@ -727,14 +727,23 @@ function wh_woo_attribute(){
     if ( ! $warehouse ) {
         return;
     }
-	  echo '<p style="color:#DDDDDD;font-size:20px;">' . $warehouse;
-	  $days = $product->get_attribute( 'pa_days' );
-	  if ( ! $days  ) {
-		    echo '</p>';
-        return;
-    }
-    echo $days . '</p>';
+	  echo '<p style="color:#DDDDDD;font-size:20px;">' . $warehouse . '</p>';
 }
 add_action('woocommerce_after_add_to_cart_form', 'wh_woo_attribute', 25);
+
+/**
+//function for show warranty on product page
+*/
+add_action( 'woocommerce_before_add_to_cart_form', 'serg_before_add_to_cart_btn' );
+
+function serg_before_add_to_cart_btn(){
+	 global $product;
+   $warranty = $product->get_attribute( 'pa_warranty' );
+   if ( ! $warranty ) {
+        return;
+      }
+	 echo '<p style="color:#777777;">' . "Гарантия - " . $warranty . " месяцев</p>";
+}
+
 
 ?>
