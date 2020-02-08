@@ -742,7 +742,7 @@ function serg_before_add_to_cart_btn(){
    if ( ! $warranty ) {
         return;
       }
-	 echo '<p style="color:#777777;">' . "Гарантия - " . $warranty . " месяцев</p>";
+	 echo '<span style="color:#777777;">' . "Гарантия - " . $warranty . " месяцев</span>";
 }
 
 
