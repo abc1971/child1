@@ -333,6 +333,15 @@ function styling_admin_order_list() {
         }
     </style>
     <?php
+    $order_status = 'prepare'; // <==== HERE
+  ?>
+  <style>
+      .order-status.status-<?php echo sanitize_title( $order_status ); ?> {
+          background: #DC143C;
+          color: #F0F000;
+      }
+  </style>
+  <?php
 			$order_status = 'to-sent-paid'; // <==== HERE
     ?>
     <style>
