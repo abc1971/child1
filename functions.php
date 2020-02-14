@@ -338,7 +338,7 @@ function styling_admin_order_list() {
   <style>
       .order-status.status-<?php echo sanitize_title( $order_status ); ?> {
           background: #DC143C;
-          color: #F0F000;
+          color: #1A7D38;
       }
   </style>
   <?php
