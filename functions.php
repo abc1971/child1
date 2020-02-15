@@ -599,11 +599,11 @@ function awoohc_override_checkout_fields( $fields ) {
    $fields['billing']['billing_postcode']['required'] = false;
    $fields['billing']['billing_last_name']['label'] = 'Имя';
    $fields['billing']['billing_first_name']['label'] = 'Фамилия';
-//   $fields['order']['order_comments']['placeholder']='1';
+
    unset( $fields['billing']['billing_state'] );
-      unset( $fields['order']['order_comments'] );
-      unset( $fields['billing']['billing_postcode'] );
-      unset( $fields['billing']['billing_billing'] );
+//   unset( $fields['order']['order_comments'] );
+   unset( $fields['billing']['billing_postcode'] );
+   unset( $fields['billing']['billing_city'] );
    unset( $fields['billing']['billing_address_1'] );
    unset( $fields['billing']['billing_address_2'] );
    return $fields;
