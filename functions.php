@@ -754,5 +754,41 @@ function serg_before_add_to_cart_btn(){
 	 echo '<span style="color:#777777;">' . "Гарантия - " . $warranty . " месяцев</span>";
 }
 
+/**
+  Update the order meta with field value
+ */
+add_action( 'woocommerce_checkout_update_order_meta', 'my_custom_checkout_field_update_order_meta' );
 
+function my_custom_checkout_field_update_order_meta( $order_id ) {
+    if ( ! empty( $_POST['billing_FIELD_ID'] ) ) {
+        update_post_meta( $order_id, 'My Field', sanitize_text_field( $_POST['billing_FIELD_ID'] ) );
+    }
+}
+
+/**
+  Display field value on the order edit page
+ */
+add_action( 'woocommerce_admin_order_data_after_billing_address', 'my_custom_checkout_field_display_admin_order_meta', 10, 1 );
+
+function my_custom_checkout_field_display_admin_order_meta($order){
+    echo '<p><strong>'.__('Полный адрес').':</strong> ' . get_post_meta( $order->id, 'My Field', true ) . '</p>';
+}
+
+/**
+ Simple checkout field addition example.
+ @param  array $fields List of existing billing fields.
+ @return array         List of modified billing fields.
+ */
+function sergey_add_checkout_fields( $fields ) {
+    $fields['billing_FIELD_ID'] = array(
+        'label'        => __( 'Полный адрес' ),
+        'type'        => 'text',
+        'class'        => array( 'form-row-wide' ),
+        'priority'     => 35,
+        'required'     => true,
+    );
+
+    return $fields;
+}
+add_filter( 'woocommerce_billing_fields', 'sergey_add_checkout_fields' );
 ?>
