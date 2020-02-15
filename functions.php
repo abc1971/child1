@@ -601,7 +601,7 @@ function awoohc_override_checkout_fields( $fields ) {
    $fields['billing']['billing_first_name']['label'] = 'Фамилия';
 
    unset( $fields['billing']['billing_state'] );
-//   unset( $fields['order']['order_comments'] );
+//  / unset( $fields['order']['order_comments'] );
    unset( $fields['billing']['billing_postcode'] );
    unset( $fields['billing']['billing_city'] );
    unset( $fields['billing']['billing_address_1'] );
