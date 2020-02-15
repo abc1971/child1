@@ -633,6 +633,7 @@ function conditionally_hidding_billing_company(){
     // HERE your shipping methods rate ID "Home delivery"
     $home_delivery = 'local_pickup:12';
 	$nova_delivery = 'flat_rate:16';
+  $nova_delivery1 = 'nova_poshta_shipping_method';
     ?>
     <script>
         jQuery(function($){
@@ -665,7 +666,7 @@ function conditionally_hidding_billing_company(){
 				            showHide('hide','#billing_FIELD_ID_field' );
 					          showHide('hide','#billing_address_2_field' );
 				        }
-                else if ( $(shipMethodChecked).val() == '<?php echo $nova_delivery; ?>' ){
+                else if ( $(shipMethodChecked).val() == '<?php echo $nova_delivery1; ?>' ){
   //                  showHide('show','#billing_city_field');
 				            showHide('show','#billing_address_2_field');
 					          showHide('hide','#billing_FIELD_ID_field');
