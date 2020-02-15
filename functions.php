@@ -589,6 +589,7 @@ function awoohc_override_checkout_fields( $fields ) {
    $fields['billing']['billing_phone']['priority'] = 30;
    $fields['billing']['billing_postcode']['priority'] = 75;
    $fields['billing']['billing_email']['priority'] = 1000;
+      $fields['billing']['order_comments']['priority'] = 900;
    $fields['billing']['billing_email']['required'] = false;
    $fields['billing']['billing_last_name']['required'] = false;
    $fields['billing']['billing_first_name']['required'] = false;
