@@ -588,7 +588,7 @@ function awoohc_override_checkout_fields( $fields ) {
    $fields['billing']['billing_last_name']['priority'] = 2;
    $fields['billing']['billing_phone']['priority'] = 30;
    $fields['billing']['billing_postcode']['priority'] = 75;
-   $fields['billing']['billing_email']['priority'] = 110;
+   $fields['billing']['billing_email']['priority'] = 1000;
    $fields['billing']['billing_email']['required'] = false;
    $fields['billing']['billing_last_name']['required'] = false;
    $fields['billing']['billing_first_name']['required'] = false;
@@ -602,8 +602,10 @@ function awoohc_override_checkout_fields( $fields ) {
 //   $fields['order']['order_comments']['placeholder']='1';
    unset( $fields['billing']['billing_state'] );
       unset( $fields['order']['order_comments'] );
-   unset( $fields['billing']['billing_postcode'] );
-   unset( $fields['billing']['billing_billing'] );
+      unset( $fields['billing']['billing_postcode'] );
+      unset( $fields['billing']['billing_billing'] );
+   unset( $fields['billing']['billing_address_1'] );
+   unset( $fields['billing']['billing_address_2'] );
    return $fields;
 }
 /**
@@ -653,25 +655,25 @@ function conditionally_hidding_billing_company(){
             // Initialising: Hide if choosen shipping method is "Home delivery"
             if( $(shipMethodChecked).val() == '<?php echo $home_delivery; ?>' ){
                 showHide('hide','#billing_city_field' );
-			          showHide('hide','#billing_address_1_field' );
+			          showHide('hide','#billing_FIELD_ID_field' );
 				        showHide('hide','#billing_address_2_field' );
 				}
             // Live event (When shipping method is changed)
             $( 'form.checkout' ).on( 'change', shipMethod, function() {
                 if ( $(shipMethodChecked).val() == '<?php echo $home_delivery; ?>' ){
                     showHide('hide','#billing_city_field' );
-				            showHide('hide','#billing_address_1_field' );
+				            showHide('hide','#billing_FIELD_ID_field' );
 					          showHide('hide','#billing_address_2_field' );
 				        }
                 else if ( $(shipMethodChecked).val() == '<?php echo $nova_delivery; ?>' ){
                     showHide('show','#billing_city_field');
 				            showHide('show','#billing_address_2_field');
-					          showHide('hide','#billing_address_1_field');
+					          showHide('hide','#billing_FIELD_ID_field');
 					      }
 					      else {
                     showHide('show','#billing_city_field');
 				    	      showHide('hide','#billing_address_2_field');
-						        showHide('show','#billing_address_1_field');
+						        showHide('show','#billing_FIELD_ID_field');
 					      }
             });
         });
