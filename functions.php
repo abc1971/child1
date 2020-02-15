@@ -654,24 +654,24 @@ function conditionally_hidding_billing_company(){
             }
             // Initialising: Hide if choosen shipping method is "Home delivery"
             if( $(shipMethodChecked).val() == '<?php echo $home_delivery; ?>' ){
-                showHide('hide','#billing_city_field' );
+    //            showHide('hide','#billing_city_field' );
 			          showHide('hide','#billing_FIELD_ID_field' );
 				        showHide('hide','#billing_address_2_field' );
 				}
             // Live event (When shipping method is changed)
             $( 'form.checkout' ).on( 'change', shipMethod, function() {
                 if ( $(shipMethodChecked).val() == '<?php echo $home_delivery; ?>' ){
-                    showHide('hide','#billing_city_field' );
+  //                  showHide('hide','#billing_city_field' );
 				            showHide('hide','#billing_FIELD_ID_field' );
 					          showHide('hide','#billing_address_2_field' );
 				        }
                 else if ( $(shipMethodChecked).val() == '<?php echo $nova_delivery; ?>' ){
-                    showHide('show','#billing_city_field');
+  //                  showHide('show','#billing_city_field');
 				            showHide('show','#billing_address_2_field');
 					          showHide('hide','#billing_FIELD_ID_field');
 					      }
 					      else {
-                    showHide('show','#billing_city_field');
+  //                  showHide('show','#billing_city_field');
 				    	      showHide('hide','#billing_address_2_field');
 						        showHide('show','#billing_FIELD_ID_field');
 					      }
