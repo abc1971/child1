@@ -17,6 +17,21 @@ function admin_style() {
 }
 add_action('admin_enqueue_scripts', 'admin_style');
 
+/**
+// Randomize order number
+*/
+add_filter( 'woocommerce_order_number', 'change_woocommerce_order_number' );
+function change_woocommerce_order_number( $order_id ) {
+
+    $prefix = ''; //you can create a random number for prefix
+    $suffix = 'INV'; //you can create a random number for suffix
+    $order_id = str_ireplace("#", "", $order_id);//remove # before from order id
+    $digits = rand(1, 9);
+
+    $new_order_id = $prefix . $order_id . $digits;
+    return $new_order_id;
+}
+
 add_filter( 'wc_order_is_editable', '__return_true' );
 /**
 Phone formatting in order
