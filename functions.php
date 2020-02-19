@@ -337,8 +337,8 @@ function styling_admin_order_list() {
   ?>
   <style>
       .order-status.status-<?php echo sanitize_title( $order_status ); ?> {
-          background: #DC143C;
-          color: #1A7D38;
+          background: ##900C3F;
+          color: #DDFFAA;
       }
   </style>
   <?php
@@ -588,8 +588,7 @@ function awoohc_override_checkout_fields( $fields ) {
    $fields['billing']['billing_last_name']['priority'] = 2;
    $fields['billing']['billing_phone']['priority'] = 30;
    $fields['billing']['billing_postcode']['priority'] = 75;
-   $fields['billing']['billing_email']['priority'] = 1000;
-      $fields['billing']['order_comments']['priority'] = 900;
+   $fields['billing']['billing_email']['priority'] = 110;
    $fields['billing']['billing_email']['required'] = false;
    $fields['billing']['billing_last_name']['required'] = false;
    $fields['billing']['billing_first_name']['required'] = false;
@@ -600,13 +599,10 @@ function awoohc_override_checkout_fields( $fields ) {
    $fields['billing']['billing_postcode']['required'] = false;
    $fields['billing']['billing_last_name']['label'] = 'Имя';
    $fields['billing']['billing_first_name']['label'] = 'Фамилия';
-
+   $fields['order']['order_comments']['placeholder']='';
    unset( $fields['billing']['billing_state'] );
-//  / unset( $fields['order']['order_comments'] );
    unset( $fields['billing']['billing_postcode'] );
-   unset( $fields['billing']['billing_city'] );
-   unset( $fields['billing']['billing_address_1'] );
-   unset( $fields['billing']['billing_address_2'] );
+   unset( $fields['billing']['billing_billing'] );
    return $fields;
 }
 /**
@@ -634,7 +630,6 @@ function conditionally_hidding_billing_company(){
     // HERE your shipping methods rate ID "Home delivery"
     $home_delivery = 'local_pickup:12';
 	$nova_delivery = 'flat_rate:16';
-  $nova_delivery1 = 'nova_poshta_shipping_method';
     ?>
     <script>
         jQuery(function($){
@@ -656,26 +651,26 @@ function conditionally_hidding_billing_company(){
             }
             // Initialising: Hide if choosen shipping method is "Home delivery"
             if( $(shipMethodChecked).val() == '<?php echo $home_delivery; ?>' ){
-    //            showHide('hide','#billing_city_field' );
-			          showHide('hide','#billing_FIELD_ID_field' );
+                showHide('hide','#billing_city_field' );
+			          showHide('hide','#billing_address_1_field' );
 				        showHide('hide','#billing_address_2_field' );
 				}
             // Live event (When shipping method is changed)
             $( 'form.checkout' ).on( 'change', shipMethod, function() {
                 if ( $(shipMethodChecked).val() == '<?php echo $home_delivery; ?>' ){
-  //                  showHide('hide','#billing_city_field' );
-				            showHide('hide','#billing_FIELD_ID_field' );
+                    showHide('hide','#billing_city_field' );
+				            showHide('hide','#billing_address_1_field' );
 					          showHide('hide','#billing_address_2_field' );
 				        }
-                else if ( $(shipMethodChecked).val() == '<?php echo $nova_delivery1; ?>' ){
-  //                  showHide('show','#billing_city_field');
+                else if ( $(shipMethodChecked).val() == '<?php echo $nova_delivery; ?>' ){
+                    showHide('show','#billing_city_field');
 				            showHide('show','#billing_address_2_field');
-					          showHide('hide','#billing_FIELD_ID_field');
+					          showHide('hide','#billing_address_1_field');
 					      }
 					      else {
-  //                  showHide('show','#billing_city_field');
+                    showHide('show','#billing_city_field');
 				    	      showHide('hide','#billing_address_2_field');
-						        showHide('show','#billing_FIELD_ID_field');
+						        showHide('show','#billing_address_1_field');
 					      }
             });
         });
@@ -746,7 +741,7 @@ function wh_woo_attribute(){
 add_action('woocommerce_after_add_to_cart_form', 'wh_woo_attribute', 25);
 
 /**
-//function for show warranty on product page
+//function for show warranty on product page.
 */
 add_action( 'woocommerce_before_add_to_cart_form', 'serg_before_add_to_cart_btn' );
 
@@ -759,41 +754,5 @@ function serg_before_add_to_cart_btn(){
 	 echo '<span style="color:#777777;">' . "Гарантия - " . $warranty . " месяцев</span>";
 }
 
-/**
-  Update the order meta with field value
- */
-add_action( 'woocommerce_checkout_update_order_meta', 'my_custom_checkout_field_update_order_meta' );
 
-function my_custom_checkout_field_update_order_meta( $order_id ) {
-    if ( ! empty( $_POST['billing_FIELD_ID'] ) ) {
-        update_post_meta( $order_id, 'My Field', sanitize_text_field( $_POST['billing_FIELD_ID'] ) );
-    }
-}
-
-/**
-  Display field value on the order edit page
- */
-add_action( 'woocommerce_admin_order_data_after_billing_address', 'my_custom_checkout_field_display_admin_order_meta', 10, 1 );
-
-function my_custom_checkout_field_display_admin_order_meta($order){
-    echo '<p><strong>'.__('Полный адрес').':</strong> ' . get_post_meta( $order->id, 'My Field', true ) . '</p>';
-}
-
-/**
- Simple checkout field addition example.
- @param  array $fields List of existing billing fields.
- @return array         List of modified billing fields.
- */
-function sergey_add_checkout_fields( $fields ) {
-    $fields['billing_FIELD_ID'] = array(
-        'label'        => __( 'Полный адрес' ),
-        'type'        => 'text',
-        'class'        => array( 'form-row-wide' ),
-        'priority'     => 35,
-        'required'     => true,
-    );
-
-    return $fields;
-}
-add_filter( 'woocommerce_billing_fields', 'sergey_add_checkout_fields' );
 ?>
