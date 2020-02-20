@@ -20,7 +20,7 @@ add_action('admin_enqueue_scripts', 'admin_style');
 /**
 // Randomize order number
 */
-add_filter( 'woocommerce_order_number', 'change_woocommerce_order_number' );
+/*add_filter( 'woocommerce_order_number', 'change_woocommerce_order_number' );
 function change_woocommerce_order_number( $order_id ) {
 
     $prefix = ''; //you can create a random number for prefix
@@ -30,7 +30,7 @@ function change_woocommerce_order_number( $order_id ) {
 
     $new_order_id = $prefix . $order_id . $digits;
     return $new_order_id;
-}
+}*/
 
 add_filter( 'wc_order_is_editable', '__return_true' );
 /**
