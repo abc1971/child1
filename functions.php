@@ -808,7 +808,7 @@ function alter_shipping_methods($available_gateways){
 		unset($available_gateways['cheque']);
 	 }
   }
-// Start: this part will remove some payment methonds (olhov) if there is product in order from definite category (memory)
+// Start: this part willl remove some payment methonds (olhov) if there is product in order from definite category (memory)
 /*	$unset = false;
 	$category_ids = array( 163 );
 	foreach ( $woocommerce->cart->cart_contents as $key => $values ) {
