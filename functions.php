@@ -50,16 +50,57 @@ function additional_hidden_checkout_field_save( $order, $data ) {
     }
 }
 /**
-Nova Poshta status metabox Show
+Nova Poshta and history status metabox Show
 */
 function order_declaration_backend ($order){
-    echo "<p><strong>Статус посылки: ";
-	  include_once "np.php";
-    $np = new NovaPoshtaApi2('29e25f2b28d9f4aeba636f6789dc6e0d');
-    $result = $np->documentsTracking($order->get_meta( '_novaposhta_field_data' ));
-    echo(($result['data'][0]['Status']) . "</strong>");
+	$np_field = $order->get_meta( '_novaposhta_field_data' );
+	if ($np_field) {
+    	echo "<p><strong>Статус посылки: ";
+	  		include_once "np.php";
+    	$np = new NovaPoshtaApi2('29e25f2b28d9f4aeba636f6789dc6e0d');
+    	$result = $np->documentsTracking($np_field);
+    	echo(($result['data'][0]['Status']) . "</strong>");
+	}
+
+	$current_order_id = $order->get_id();
+	$current_phone = $order->get_billing_phone();
+	$args = array(
+    'billing_phone' => $current_phone,
+);
+	$orders = wc_get_orders( $args );
+	$order_html = '';
+	$site_begin = "https://informatica.com.ua/wp-admin/post.php?post=";
+	$site_end = '&action=edit';
+	if(!empty($orders))
+        foreach($orders as $order_current) {
+			$id = $order_current->get_id();
+			if ($id != $current_order_id) {
+				$order_href = $site_begin . $id . $site_end;
+				$order_html .= '<a href=' . $order_href . '>' . $id .',</a>';
+			}
+		}
+	if ( strlen($order_html) >0 )
+		echo '<br><strong>Заказы с этого телефона:</strong> ' . $order_html;
+
+	$current_ip = $order->get_customer_ip_address();
+	$args = array(
+    'customer_ip_address' => $current_ip,
+);
+	$orders = wc_get_orders( $args );
+	$order_html = '';
+	if(!empty($orders))
+        foreach($orders as $order_current) {
+			$id = $order_current->get_id();
+			if ($id != $current_order_id) {
+				$order_href = $site_begin . $id . $site_end;
+				$order_html .= '<a href=' . $order_href . '>' . $id .',</a><br>';
+			}
+		}
+	if ( strlen($order_html) >0 )
+		echo '<br><strong>Заказы с этого IP:</strong> ' . $order_html;
 }
 add_action( 'woocommerce_admin_order_data_after_shipping_address', 'order_declaration_backend', 10, 1 );
+
 /**
 Email from field informatica.com.ua
 */
@@ -366,6 +407,15 @@ function styling_admin_order_list() {
         }
     </style>
     <?php
+			$order_status = 'direct-dd'; // <==== HERE
+    ?>
+    <style>
+        .order-status.status-<?php echo sanitize_title( $order_status ); ?> {
+            background: #800080;
+            color:#ffccee;
+        }
+    </style>
+    <?php
 }
 add_action('admin_head', 'styling_admin_order_list' );
 /**
@@ -573,11 +623,11 @@ function order_details_backend($order){
 		echo $value['name'] . " " . $value['qty'] . "шт * " . $value['line_total']/$value['qty'] ;
 		echo "<br>";
 	}
-	echo "наложка / оплачено на ";
+	echo "Наложка / БЕЗ_наложки ";
 	echo $order->get_subtotal()-$order->get_discount_total() . "грн<br>";
   echo get_post_meta( $order->id, '_billing_first_name', true )  . " " . get_post_meta( $order->id, '_billing_last_name', true )  . ", " . get_post_meta( $order->id, '_billing_phone', true ) ;
 	if( get_post_meta( $order->id, '_billing_city', true ) ) echo ", НП: " . get_post_meta( $order->id, '_billing_city', true );
-	if( get_post_meta( $order->id, '_billing_address_2', true ) ) echo " - отд:" . get_post_meta( $order->id, '_billing_address_2', true );
+	if( get_post_meta( $order->id, '_billing_address_1', true ) ) echo " - " . get_post_meta( $order->id, '_billing_address_1', true );
 }
 add_action( 'woocommerce_admin_order_data_after_billing_address', 'order_details_backend', 10, 1 );
 /**
@@ -597,27 +647,39 @@ function vp_add_sub_total2( $order_id ) {
 */
 add_filter( 'woocommerce_checkout_fields', 'awoohc_override_checkout_fields' );
 function awoohc_override_checkout_fields( $fields ) {
-   $fields['billing']['billing_email']['required'] = false;
-   $fields['billing']['billing_last_name']['required'] = false;
-   $fields['billing']['billing_first_name']['priority'] = 1;
-   $fields['billing']['billing_last_name']['priority'] = 2;
-   $fields['billing']['billing_phone']['priority'] = 30;
-   $fields['billing']['billing_postcode']['priority'] = 75;
-   $fields['billing']['billing_email']['priority'] = 110;
+ //  $fields['billing']['billing_email']['required'] = false;
+ //  $fields['billing']['billing_last_name']['required'] = false;
+ //  $fields['billing']['billing_first_name']['priority'] = 1;
+//   $fields['billing']['billing_last_name']['priority'] = 2;
+//$fields['billing']['billing_phone']['priority'] = 20;
+ //  $fields['billing']['billing_address_1']['priority'] = 60;
+//   $fields['billing']['billing_postcode']['priority'] = 75;
+//   $fields['billing']['billing_email']['priority'] = 200;
    $fields['billing']['billing_email']['required'] = false;
    $fields['billing']['billing_last_name']['required'] = false;
    $fields['billing']['billing_first_name']['required'] = false;
-   $fields['billing']['billing_phone']['required'] = true;
    $fields['billing']['billing_city']['required'] = false;
    $fields['billing']['billing_address_1']['required'] = false;
    $fields['billing']['billing_address_2']['required'] = false;
-   $fields['billing']['billing_postcode']['required'] = false;
-   $fields['billing']['billing_last_name']['label'] = 'Имя';
-   $fields['billing']['billing_first_name']['label'] = 'Фамилия';
-   $fields['order']['order_comments']['placeholder']='';
+
+ //  $fields['billing']['billing_phone']['required'] = true;
+//   $fields['billing']['billing_city']['required'] = false;
+   $fields['billing']['billing_address_1']['required'] = false;
+//   $fields['billing']['billing_address_2']['required'] = false;
+//   $fields['billing']['billing_postcode']['required'] = false;
+ //  $fields['billing']['billing_last_name']['label'] = '';
+//	   $fields['order']['billing_last_name']['placeholder']='Имя';
+ //  $fields['billing']['billing_first_name']['label'] = '';
+//	   $fields['order']['billing_first_name']['placeholder']='Фамилия';
+//   $fields['order']['order_comments']['placeholder']='';
+   unset( $fields['billing']['billing_city'] );
+ //  unset( $fields['billing']['billing_address_1'] );
+   unset( $fields['billing']['billing_address_2'] );
    unset( $fields['billing']['billing_state'] );
    unset( $fields['billing']['billing_postcode'] );
    unset( $fields['billing']['billing_billing'] );
+
+
    return $fields;
 }
 /**
@@ -625,14 +687,36 @@ function awoohc_override_checkout_fields( $fields ) {
 */
 add_filter( 'woocommerce_default_address_fields', 'custom_override_default_locale_fields' );
 function custom_override_default_locale_fields( $fields ) {
-    $fields['state']['priority'] = 5;
-	  $fields['city']['priority'] = 60;
-    $fields['address_1']['priority'] = 90;
-    $fields['address_2']['priority'] = 100;
-	  $fields['address_2']['label'] = 'Отделение Новой Почты';
-	  $fields['address_2']['required'] = 'false';
-	  $fields['address_2']['placeholder'] = '№ отделения';
-    $fields['address_1']['placeholder'] = 'Укажите улицу, дом и квартиру';
+//	   $fields['billing_first_name']['priority'] = 10;
+ //  $fields['billing_last_name']['priority'] = 20;
+//    $fields['address_2']['priority'] = 100;
+//   $fields['billing']['billing_first_name']['priority'] = 1;
+//   $fields['billing']['billing_last_name']['priority'] = 2;
+//   $fields['billing']['billing_phone']['priority'] = 30;
+//   $fields['billing']['billing_postcode']['priority'] = 75;
+//   $fields['billing']['billing_email']['priority'] = 200;
+//	  $fields['address_2']['label'] = 'Отделение Новой Почты';
+//	  $fields['address_2']['required'] = 'false';
+//	  $fields['address_2']['placeholder'] = '№ отделения';
+//	    $fields['phone']['priority'] = 20;
+ //   	$fields['state']['priority'] = 90;
+//	  	$fields['city']['priority'] = 80;
+ //   	$fields['address_1']['priority'] = 60;
+	    	$fields['email']['priority'] = 200;
+
+//		$fields['first_name']['placeholder']='Фамилия1';
+//		$fields['last_name']['placeholder']='Имя1';
+	    $fields['address_1']['placeholder'] = 'Укажите город и точный адрес';
+//	    $fields['city']['placeholder'] = 'Укажите населенный пункт';
+
+//		$fields['first_name']['label']='';
+//		$fields['last_name']['label']='';
+//		$fields['city']['label']='';
+		$fields['address_1']['label'] = '';
+		$fields['address_1']['required'] = 'false';
+		$fields['first_name']['required']='false';
+		$fields['last_name']['required']='false';
+
     return $fields;
 }
 /**
@@ -644,7 +728,7 @@ function conditionally_hidding_billing_company(){
     if( ! is_checkout() ) return;
     // HERE your shipping methods rate ID "Home delivery"
     $home_delivery = 'local_pickup:12';
-	$nova_delivery = 'flat_rate:16';
+	$nova_delivery = 'npttn_address_shipping_method:19';
     ?>
     <script>
         jQuery(function($){
@@ -654,38 +738,37 @@ function conditionally_hidding_billing_company(){
             // Function that shows or hide imput select fields
             function showHide( actionToDo='show', selector='' ){
                 if( actionToDo == 'show' )
-                    $(selector).show( 200, function(){
-           //             $(this).addClass("validate-required");
+                    $(selector).show( 1000, function(){
+      //                 $(this).addClass("validate-required");
                     });
                 else
-                    $(selector).hide( 200, function(){
-           //             $(this).removeClass("validate-required");
+                    $(selector).hide( 1000, function(){
+      //                $(this).removeClass("validate-required");
                     });
                 $(selector).removeClass("woocommerce-validated");
                 $(selector).removeClass("woocommerce-invalid woocommerce-invalid-required-field");
             }
+
+
+
             // Initialising: Hide if choosen shipping method is "Home delivery"
             if( $(shipMethodChecked).val() == '<?php echo $home_delivery; ?>' ){
-                showHide('hide','#billing_city_field' );
-			          showHide('hide','#billing_address_1_field' );
-				        showHide('hide','#billing_address_2_field' );
+				            showHide('hide','#billing_address_1_field' );
+					        showHide('hide','#billing_address_1' );
 				}
             // Live event (When shipping method is changed)
             $( 'form.checkout' ).on( 'change', shipMethod, function() {
                 if ( $(shipMethodChecked).val() == '<?php echo $home_delivery; ?>' ){
-                    showHide('hide','#billing_city_field' );
 				            showHide('hide','#billing_address_1_field' );
-					          showHide('hide','#billing_address_2_field' );
+					        showHide('hide','#billing_address_1' );
 				        }
                 else if ( $(shipMethodChecked).val() == '<?php echo $nova_delivery; ?>' ){
-                    showHide('show','#billing_city_field');
-				            showHide('show','#billing_address_2_field');
-					          showHide('hide','#billing_address_1_field');
+				            showHide('show','#billing_address_1_field' );
+					        showHide('show','#billing_address_1' );
 					      }
 					      else {
-                    showHide('show','#billing_city_field');
-				    	      showHide('hide','#billing_address_2_field');
-						        showHide('show','#billing_address_1_field');
+				            showHide('hide','#billing_address_1_field' );
+					        showHide('hide','#billing_address_1' );
 					      }
             });
         });
@@ -705,28 +788,28 @@ function alter_shipping_methods($available_gateways){
 		foreach ($chosen_rates as $chosen) {
 			if( isset( $method['rates'][$chosen] ) ) $chosen_titles[] = $method['rates'][ $chosen ]->label;
 		}
-		if( in_array( 'Самовывоз в Киеве (м. Сырец)', $chosen_titles ) ) {
+		if( in_array( 'Самовывоз в Киеве', $chosen_titles ) ) {
 		unset($available_gateways['paypal']);
 		unset($available_gateways['bacs']);
 //		unset($available_gateways['cod']);
 		unset($available_gateways['cheque']);
 		unset($available_gateways['liqpay']);
 		}
-		elseif( in_array( 'Отделение Новой Почты', $chosen_titles ) ) {
+		elseif( in_array( 'Нова Пошта', $chosen_titles ) ) {
 //		unset($available_gateways['paypal']);
 //		unset($available_gateways['bacs']);
 		unset($available_gateways['cod']);
 //		unset($available_gateways['cheque']);
 //		unset($available_gateways['liqpay']);
 		}
-		elseif( in_array( 'Курьером на адрес', $chosen_titles ) ) {
+		elseif( in_array( 'Адресная доставка Нова Пошта', $chosen_titles ) ) {
 //		unset($available_gateways['bacs']);
 		unset($available_gateways['cod']);
 		unset($available_gateways['cheque']);
 	 }
   }
 // Start: this part will remove some payment methonds (olhov) if there is product in order from definite category (memory)
-	$unset = false;
+/*	$unset = false;
 	$category_ids = array( 163 );
 	foreach ( $woocommerce->cart->cart_contents as $key => $values ) {
     	$terms = get_the_terms( $values['product_id'], 'product_cat' );
@@ -738,8 +821,11 @@ function alter_shipping_methods($available_gateways){
     	}
 	}
     if ( $unset == true ) unset( $available_gateways['bacs'] );
-    	else unset( $available_gateways['custom'] );
+    	else unset( $available_gateways['custom'] );*/
 // End: this part removed some payment methonds (olhov) if there is product in order from definite category (memory)
+//	$var = $woocommerce->cart->cart_contents_total;
+	if ( $woocommerce->cart->cart_contents_total < 500 ) unset( $available_gateways['bacs'] );
+    	else unset( $available_gateways['custom'] );
   	return $available_gateways;
 }
 /**
